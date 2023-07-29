@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { addUser } from '@/services/user';
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -11,6 +12,30 @@ export const authOptions: NextAuthOptions = {
     // ...add more providers here
   ],
   callbacks: {
+    // signIn -> session
+    async signIn({ user: { id, name, image, email } }) {
+      /**
+       * console.log(user);
+       * {
+       *   id: '아이디',
+       *   name: '이름',
+       *   email: '이메일',
+       *   image: '이미지'
+       * }
+       */
+      if (!email) {
+        return false;
+      }
+      addUser({
+        id,
+        name: name || '',
+        image,
+        email,
+        username: email.split('@')[0],
+      });
+      return true;
+    },
+    // https://next-auth.js.org/configuration/callbacks#session-callback
     async session({ session }) {
       /**
        * console.log(session);
@@ -34,6 +59,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  // https://next-auth.js.org/configuration/pages
   pages: {
     signIn: '/auth/signin',
   },

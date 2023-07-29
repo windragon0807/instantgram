@@ -15,6 +15,7 @@ export default function Signin({ providers, callbackUrl }: Props) {
         <ColorButton
           key={id}
           text={`Sign In with ${name}`}
+          // https://next-auth.js.org/getting-started/client#specifying-a-callbackurl
           onClick={() => signIn(id, { callbackUrl })}
           size='big'
         />
