@@ -1,10 +1,20 @@
-type Props = { image?: string | null };
-export default function Avatar({ image }: Props) {
+type Props = {
+  image?: string | null;
+  size?: 'small' | 'normal';
+  highlight?: boolean;
+};
+
+export default function Avatar({
+  image,
+  size = 'normal',
+  highlight = false,
+}: Props) {
   return (
-    <div className='w-9 h-9 rounded-full bg-gradient-to-bl from-fuchsia-600 via-rose-500 to-amber-300'>
-      {/* eslint-disable-next-line @next/next/no-img-element*/}
+    <div className={getContainerStyle(size, highlight)}>
+      {/* 외부 url에 대한 포맷을 정하기 어려우므로 img 태그 사용 */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        className='rounded-full p-[0.1rem]'
+        className={`bg-white rounded-full ${getImageSizeStyle(size)}`}
         alt='user profile'
         src={image ?? undefined}
         // 외부 링크 사용해서 나타나는 x박스 이슈 해결
@@ -14,9 +24,17 @@ export default function Avatar({ image }: Props) {
   );
 }
 
-/**
- * [next에서 제공하는 Image가 아닌 img 태그를 사용해야 하는 이유]
- * 로컬 상에 있거나 특정한 url에 있다면 외부 url에 대한 도메인을 next config에 추가하면
- * 외부 url을 Image 태그에서 사용할 수 있었다.
- * 하지만 google에서 주어지는 이미지 url은 내부 구현사항이며 달라지므로 등록하기 어렵다.
- */
+function getContainerStyle(size: string, highlight: boolean): string {
+  const baseStyle = 'rounded-full flex justify-center items-center';
+  const highlightStyle = highlight
+    ? 'bg-gradient-to-bl from-fuchsia-600 via-rose-500 to-amber-300'
+    : '';
+  const sizeStyle = size === 'small' ? 'w-9 h-9' : 'w-[68px] h-[68px]';
+  return `${baseStyle} ${highlightStyle} ${sizeStyle}`;
+}
+
+function getImageSizeStyle(size: string): string {
+  return size === 'small'
+    ? 'w-[34px] h-[34px] p-[0.1rem]'
+    : 'w-16 h-16 p-[0.2rem] ';
+}
