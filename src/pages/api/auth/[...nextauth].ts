@@ -3,13 +3,11 @@ import GoogleProvider from 'next-auth/providers/google';
 import { addUser } from '@/services/user';
 
 export const authOptions: NextAuthOptions = {
-  // Configure one or more authentication providers
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_OAUTH_ID || '',
       clientSecret: process.env.GOOGLE_OAUTH_SECRET || '',
     }),
-    // ...add more providers here
   ],
   callbacks: {
     // signIn -> session

@@ -22,3 +22,16 @@ export async function addUser({ id, username, email, name, image }: OAuthUser) {
     bookmarks: [],
   });
 }
+
+// Query Reference : https://www.sanity.io/docs/query-cheat-sheet
+export async function getUserByUsername(username: string) {
+  return client.fetch(
+    `*[_type == "user" && username == "${username}"][0]{
+      ...,
+      "id":_id,
+      following[]->{username,image},
+      followers[]->{username,image},
+      "bookmarks":bookmarks[]->_id
+    }`,
+  );
+}
