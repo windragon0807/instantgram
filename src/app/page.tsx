@@ -5,6 +5,7 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
+// session이 있어야 접근 가능하기 때문에 SSR 렌더링
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
