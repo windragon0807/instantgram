@@ -14,7 +14,7 @@ export default function Avatar({
       {/* 외부 url에 대한 포맷을 정하기 어려우므로 img 태그 사용 */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        className={`bg-white rounded-full ${getImageSizeStyle(size)}`}
+        className={`bg-white object-cover rounded-full ${getImageSizeStyle(size)}`}
         alt='user profile'
         src={image ?? undefined}
         // 외부 링크 사용해서 나타나는 x박스 이슈 해결
@@ -29,7 +29,7 @@ function getContainerStyle(size: string, highlight: boolean): string {
   const highlightStyle = highlight
     ? 'bg-gradient-to-bl from-fuchsia-600 via-rose-500 to-amber-300'
     : '';
-  const sizeStyle = size === 'small' ? 'w-9 h-9' : 'w-[68px] h-[68px]';
+  const sizeStyle = size === 'small' ? 'w-10 h-10' : 'w-[65px] h-[65px]';
   return `${baseStyle} ${highlightStyle} ${sizeStyle}`;
 }
 
