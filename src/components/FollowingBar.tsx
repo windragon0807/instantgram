@@ -1,6 +1,6 @@
 "use client";
 
-import { DetailUser } from "@/model/user";
+import { HomeUser } from "@/model/user";
 import Link from "next/link";
 import { PropagateLoader } from "react-spinners";
 import useSWR from "swr";
@@ -9,7 +9,7 @@ import ScrollableBar from "./ui/ScrollableBar";
 
 // SSR 렌더링을 사용하기에는 각각 받아오는 데이터가 많으므로 CSR 렌더링 채택
 export default function FollowingBar() {
-  const { data, isLoading: loading, error } = useSWR<DetailUser>("/api/me");
+  const { data, isLoading: loading, error } = useSWR<HomeUser>("/api/me");
   //   const users = data?.following;
   const users = data?.following && [...data?.following, ...data?.following, ...data?.following];
 
