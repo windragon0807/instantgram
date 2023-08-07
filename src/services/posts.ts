@@ -71,3 +71,22 @@ function mapPosts(posts: SimplePost[]) {
     image: urlFor(post.image),
   }));
 }
+
+// https://www.sanity.io/docs/js-client#adding-elements-to-an-array
+export async function likePost(postId: string, userId: string) {
+  return client.patch(postId)
+    .setIfMissing({ likes: [] }) // likes가 없으면 빈 배열로 설정
+    .append('likes', [ // likes라는 키를 만들고 데이터를 추가
+      {
+        _ref: userId,
+        _type: 'reference',
+      }
+    ])
+    .commit({ autoGenerateArrayKeys: true }); // 배열 키 자동 생성
+}
+
+export async function dislikePost(postId: string, userId: string) {
+  return client.patch(postId)
+    .unset([`likes[_ref=="${userId}"]`])
+    .commit();
+}

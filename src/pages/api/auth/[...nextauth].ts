@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    // signIn -> session
+    // signIn -> jwt -> session
     async signIn({ user: { id, name, image, email } }) {
       /**
        * console.log(user);
@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     // https://next-auth.js.org/configuration/callbacks#session-callback
-    async session({ session }) {
+    async session({ session, token }) {
       /**
        * console.log(session);
        * {
@@ -52,10 +52,18 @@ export const authOptions: NextAuthOptions = {
         session.user = {
           ...user,
           username: user.email?.split('@')[0] || '',
+          id: token.id as string,
         };
       }
       return session;
     },
+    // https://next-auth.js.org/configuration/callbacks#jwt-callback
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    }
   },
   // https://next-auth.js.org/configuration/pages
   pages: {
