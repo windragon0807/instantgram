@@ -5,22 +5,37 @@ import { useState } from 'react';
 import ToggleButton from './ui/ToggleButton';
 import HeartFillIcon from './ui/icons/HeartFillIcon';
 import BookmarkFillIcon from './ui/icons/BookmarkFillIcon';
+import { SimplePost } from '@/model/post';
+import { useSession } from 'next-auth/react';
+import { useSWRConfig } from 'swr';
 
 type Props = {
-  likes: string[];
-  username: string;
-  createdAt: string;
-  text?: string;
-}
-export default function ActionBar({ likes, username, text, createdAt }: Props) {
-  const [liked, setLiked] = useState<boolean>(false);
+  post: SimplePost;
+};
+
+export default function ActionBar({ post }: Props) {
+  const { id, likes, username, text, createdAt } = post;
+  const { data: session } = useSession();
+  const user = session?.user;
+  const { mutate } = useSWRConfig();
+
+  // 내부에서 liked 상태를 관리하는 것이 아닌, mutate로 외부 post 데이터가 달라질 때 해당 데이터를 사용
+  const liked = user ? likes.includes(user.username) : false;
+  const handleLike = (like: boolean) => {
+    fetch('api/likes', {
+      method: 'PUT',
+      body: JSON.stringify({ id, like }),
+    }).then(() => mutate('/api/posts')); // mutate로 전체 캐시 업데이트
+  };
+
   const [bookmarked, setBookmarked] = useState<boolean>(false);
+
   return (
     <>
       <div className='flex justify-between my-2 px-4'>
         <ToggleButton
           toggled={liked}
-          onToggle={setLiked}
+          onToggle={handleLike}
           onIcon={<HeartFillIcon />}
           offIcon={<HeartIcon />}
         />
