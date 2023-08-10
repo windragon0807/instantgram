@@ -1,13 +1,12 @@
 import HeartIcon from './ui/icons/HeartIcon';
 import BookmarkIcon from './ui/icons/BookmarkIcon';
 import { parseDate } from '@/util/date';
-import { useState } from 'react';
 import ToggleButton from './ui/ToggleButton';
 import HeartFillIcon from './ui/icons/HeartFillIcon';
 import BookmarkFillIcon from './ui/icons/BookmarkFillIcon';
 import { SimplePost } from '@/model/post';
-import { useSession } from 'next-auth/react';
 import usePosts from '@/hooks/posts';
+import useMe from '@/hooks/me';
 
 type Props = {
   post: SimplePost;
@@ -15,19 +14,19 @@ type Props = {
 
 export default function ActionBar({ post }: Props) {
   const { id, likes, username, text, createdAt } = post;
-  const { data: session } = useSession();
-  const user = session?.user;
+  const { user, setBookmark } = useMe();
+  const { setLike } = usePosts();
 
   // 내부에서 liked 상태를 관리하는 것이 아닌, mutate로 외부 post 데이터가 달라질 때 해당 데이터를 사용
   const liked = user ? likes.includes(user.username) : false;
-  const { setLike } = usePosts();
   const handleLike = (like: boolean) => {
-    if (user) {
-      setLike(post, user.username, like);
-    }
+    user && setLike(post, user.username, like);
   };
 
-  const [bookmarked, setBookmarked] = useState<boolean>(false);
+  const bookmarked = user?.bookmarks.includes(id) ?? false;
+  const handleBookmark = (bookmark: boolean) => {
+    user && setBookmark(id, bookmark);
+  };
 
   return (
     <>
@@ -40,7 +39,7 @@ export default function ActionBar({ post }: Props) {
         />
         <ToggleButton
           toggled={bookmarked}
-          onToggle={setBookmarked}
+          onToggle={handleBookmark}
           onIcon={<BookmarkFillIcon />}
           offIcon={<BookmarkIcon />}
         />
