@@ -1,18 +1,17 @@
-import { addBookmark, removeBookmark } from '@/service/user';
 import { withSessionUser } from '@/util/session';
+import { addComment } from '@/service/posts';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
   return withSessionUser(async (user) => {
-    const { id, bookmark } = await req.json();
+    const { id, comment } = await req.json();
 
-    if (!id || bookmark == null) {
+    // comment가 null 이거나 undefined 인지 확인
+    if (!id || comment == null) {
       return new Response('Bad Request', { status: 400 });
     }
 
-    const request = bookmark ? addBookmark : removeBookmark;
-
-    return request(user.id, id)
+    return addComment(id, user.id, comment)
       .then((res) => NextResponse.json(res))
       .catch((error) => new Response(JSON.stringify(error), { status: 500 }));
   });

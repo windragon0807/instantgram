@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic';
 
 const GridLoader = dynamic(
-    () => import('react-spinners').then((lib) => lib.GridLoader),
-    { ssr: false }
+  () => import('react-spinners').then((lib) => lib.GridLoader),
+  { ssr: false }
 );
 
 type Props = {

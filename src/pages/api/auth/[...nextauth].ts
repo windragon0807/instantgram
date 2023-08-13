@@ -1,7 +1,6 @@
+import { addUser } from '@/service/user';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { addUser } from '@/services/user';
-
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -63,12 +62,11 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
       }
       return token;
-    }
+    },
   },
   // https://next-auth.js.org/configuration/pages
   pages: {
     signIn: '/auth/signin',
   },
 };
-
 export default NextAuth(authOptions);

@@ -1,10 +1,10 @@
-import { getLikedPostsOf, getPostsOf, getSavedPostsOf } from '@/services/posts';
+import { getLikedPostsOf, getPostsOf, getSavedPostsOf } from '@/service/posts';
 import { NextRequest, NextResponse } from 'next/server';
 
 type Context = {
   params: {
     slug: string[];
-  }
+  };
 };
 
 export async function GET(_: NextRequest, context: Context) {
@@ -23,5 +23,5 @@ export async function GET(_: NextRequest, context: Context) {
     request = getLikedPostsOf;
   }
 
-  return request(username).then(data => NextResponse.json(data));
+  return request(username).then((data) => NextResponse.json(data));
 }

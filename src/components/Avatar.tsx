@@ -38,28 +38,27 @@ type ImageSizeStyle = {
   container: string;
   image: string;
 };
-
 function getImageSizeStyle(size: AvatarSize): ImageSizeStyle {
   switch (size) {
     case 'small':
       return {
         container: 'w-10 h-10',
-        image: 'w-[34px] h-[34px] p-[0.1rem]'
+        image: 'w-[34px] h-[34px] p-[0.1rem]',
       };
     case 'medium':
       return {
         container: 'w-12 h-12',
-        image: 'w-[42px] h-[42px] p-[0.1rem]'
+        image: 'w-[42px] h-[42px] p-[0.1rem]',
       };
     case 'large':
       return {
         container: 'w-[65px] h-[65px]',
-        image: 'w-16 h-16 p-[0.2rem]'
+        image: 'w-16 h-16 p-[0.2rem]',
       };
     case 'xlarge':
       return {
         container: 'w-[142px] h-[142px]',
-        image: 'w-[138px] h-[138px] p-[0.3rem]'
+        image: 'w-[138px] h-[138px] p-[0.3rem]',
       };
     default:
       throw new Error(`Unsupported type size: ${size}`);

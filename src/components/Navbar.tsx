@@ -38,7 +38,7 @@ export default function Navbar() {
   return (
     <div className='flex justify-between items-center px-6'>
       <Link href='/'>
-        <h1 className='text-3xl font-bold'>Instagram</h1>
+        <h1 className='text-3xl font-bold'>Instantgram</h1>
       </Link>
       <nav>
         <ul className='flex gap-4 items-center p-4'>
@@ -58,9 +58,9 @@ export default function Navbar() {
           )}
           <li>
             {session ? (
-              <ColorButton text='Sign out' onClick={signOut} />
+              <ColorButton text='Sign out' onClick={() => signOut()} />
             ) : (
-              <ColorButton text='Sign in' onClick={signIn} />
+              <ColorButton text='Sign in' onClick={() => signIn()} />
             )}
           </li>
         </ul>

@@ -1,5 +1,6 @@
 'use client';
 
+import { CacheKeysContext } from '@/context/CacheKeysContext';
 import { ProfileUser } from '@/model/user';
 import { useState } from 'react';
 import PostGrid from './PostGrid';
@@ -19,13 +20,15 @@ const tabs = [
 
 export default function UserPosts({ user: { username } }: Props) {
   const [query, setQuery] = useState(tabs[0].type);
-  
+
   return (
     <section>
       <ul className='flex justify-center uppercase'>
         {tabs.map(({ type, icon }) => (
           <li
-            className={`mx-12 p-4 cursor-pointer border-black ${type === query && 'font-bold border-t'}`}
+            className={`mx-12 p-4 cursor-pointer border-black ${
+              type === query && 'font-bold border-t'
+            }`}
             key={type}
             onClick={() => setQuery(type)}
           >
@@ -34,7 +37,11 @@ export default function UserPosts({ user: { username } }: Props) {
           </li>
         ))}
       </ul>
-      <PostGrid username={username} query={query} />
+      <CacheKeysContext.Provider
+        value={{ postsKey: `/api/users/${username}/${query}` }}
+      >
+        <PostGrid />
+      </CacheKeysContext.Provider>
     </section>
   );
 }

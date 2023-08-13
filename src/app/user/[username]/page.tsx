@@ -1,6 +1,6 @@
 import UserPosts from '@/components/UserPosts';
 import UserProfile from '@/components/UserProfile';
-import { getUserForProfile } from '@/services/user';
+import { getUserForProfile } from '@/service/user';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
@@ -13,7 +13,7 @@ type Props = {
 
 const getUser = cache(async (username: string) => getUserForProfile(username));
 
-export default async function UserPage({ params: { username }}: Props) {
+export default async function UserPage({ params: { username } }: Props) {
   const user = await getUser(username);
 
   if (!user) {
@@ -28,10 +28,12 @@ export default async function UserPage({ params: { username }}: Props) {
   );
 }
 
-export async function generateMetadata({ params: { username } }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params: { username },
+}: Props): Promise<Metadata> {
   const user = await getUser(username);
   return {
-    title: `${user?.name} (@${user?.username}) • Instantgram Photos`,
+    title: `${user?.name} (@${user?.username}) · Instantgram Photos`,
     description: `${user?.name}'s all Instantgram posts`,
-  }
+  };
 }
