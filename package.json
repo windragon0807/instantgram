@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "sanity": "cd sanity-studio && npm run start",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
