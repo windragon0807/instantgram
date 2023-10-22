@@ -7,19 +7,31 @@
 프로젝트를 로컬 환경에서 실행하려면 다음 단계를 따르세요.
 
 1. 먼저 이 프로젝트를 복제합니다.
-  ```sh
-  git clone https://github.com/사용자명/프로젝트명.git
-  ```
+```sh
+git clone https://github.com/사용자명/프로젝트명.git
+```
 
 2. 프로젝트 폴더로 이동합니다.
 ```sh
 cd instantgram
 ```
 
-3. 프로젝트 종속성을 설치합니다. npm을 사용하려면 다음 명령을 실행하세요.
+3. 프로젝트 종속성을 설치합니다.
 ```sh
-# test
-// test
+# npm
 npm install
+
+# yarn
+yarn install
 ```
-  
+
+## 실행
+
+프로젝트를 실행하려면 다음 명령을 사용하세요.
+```sh
+# npm
+npm run dev
+
+# yarn
+yarn dev
+```
